@@ -4,17 +4,40 @@ import json
 from item import Item
 from fence_item import Item1
 app = FastAPI()
-
+total_requesta_recevied_post = 0
+total_requesta_recevied_get = 0
+avg_handing_time= 0
 @app.get("/test")
 def test():
+    global total_requesta_recevied_get
+    dict = {"url":"/test","method":"POST"}
+    total_requesta_recevied_get += 1
+    dict["stats"] = {"total_requesta_recevied":total_requesta_recevied_get}
+    dict = json.dumps(dict)
+    with open('endpoints_data.json','a') as f:
+        f.write(dict)
     return {"msg":"hi from test"}
 
 @app.get("/test/{name}")
 def server_name(name):
+    global total_requesta_recevied_get
+    dict = {"url": "/test/{name}", "method": "GET"}
+    total_requesta_recevied_get += 1
+    dict["stats"] = {"total_requesta_recevied": total_requesta_recevied_get}
+    dict = json.dumps(dict)
+    with open('endpoints_data.json', 'a') as f:
+        f.write(dict)
     return {"msg":name}
 
 @app.post("/caesar")
 def create(item:Item):
+    global total_requesta_recevied_post
+    dict = {"url": "/caesar", "method": "GET"}
+    total_requesta_recevied_post += 1
+    dict["stats"] = {"total_requesta_recevied": total_requesta_recevied_post}
+    dict = json.dumps(dict)
+    with open('endpoints_data.json', 'a') as f:
+        f.write(dict)
     str = ""
     laters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
     if item.mode == "encrypt":
@@ -30,6 +53,13 @@ def create(item:Item):
 
 @app.get("/fence/encrypt")
 def get_fence(text:str):
+    global total_requesta_recevied_get
+    dict = {"url": "/caesar", "method": "GET"}
+    total_requesta_recevied_get += 1
+    dict["stats"] = {"total_requesta_recevied": total_requesta_recevied_get}
+    dict = json.dumps(dict)
+    with open('endpoints_data.json', 'a') as f:
+        f.write(dict)
     str = ""
     str1 = ""
     for i in range(len(text)):
@@ -42,6 +72,13 @@ def get_fence(text:str):
 
 @app.post("/fence/decrypt")
 def post_fence(item:Item1):
+    global total_requesta_recevied_post
+    dict = {"url": "/caesar", "method": "GET"}
+    total_requesta_recevied_post += 1
+    dict["stats"] = {"total_requesta_recevied": total_requesta_recevied_post}
+    dict = json.dumps(dict)
+    with open('endpoints_data.json', 'a') as f:
+        f.write(dict)
     str = ""
     if len(item.text) % 2 == 0:
         str1 = item.text[:len(item.text)//2]
