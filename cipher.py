@@ -42,3 +42,21 @@ def get_fence(text:str):
 
 @app.post("/fence/decrypt")
 def post_fence(item:Item1):
+    str = ""
+    if len(item.text) % 2 == 0:
+        str1 = item.text[:len(item.text)//2]
+        str2 = item.text[len(item.text)//2:]
+        for i in range(len(str1)):
+            str += str1[i]
+            str += str2[i]
+    else:
+        str1 = item.text[:len(item.text)//2+1]
+        str2 = item.text[len(item.text)//2+1:]
+        for i in range(len(str1)):
+            str += str1[i]
+            try:
+                str += str2[i]
+            except:
+                pass
+    return {"decrypted":str}
+
